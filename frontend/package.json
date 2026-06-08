@@ -1,15 +1,17 @@
 {
-  "name": "vite-react-typescript-starter",
-  "private": true,
+  "name": "tupka2.0",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://AndreyTrue02.github.io/tupka2.0/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "smoke:ui": "node scripts/ui_smoke.mjs",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
@@ -26,6 +28,7 @@
     "eslint": "^9.9.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.11",
+    "gh-pages": "^6.3.0",
     "globals": "^15.9.0",
     "postcss": "^8.5.15",
     "tailwindcss": "^3.4.19",
