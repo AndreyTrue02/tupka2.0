@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutGrid, Search, Settings2, UserRound } from 'lucide-react';
+import { LayoutGrid, MessageCircle, Search, Settings2, UserRound } from 'lucide-react';
 
 interface TabItem {
   id: string;
@@ -17,6 +17,7 @@ export const TabBar: React.FC<TabBarProps> = ({ activeTab, onChange }) => {
     { id: 'feed', icon: <LayoutGrid className="h-[19px] w-[19px]" />, label: 'Лента' },
     { id: 'search', icon: <Search className="h-[19px] w-[19px]" />, label: 'Поиск' },
     { id: 'create', icon: <Settings2 className="h-[19px] w-[19px]" />, label: 'Продать' },
+    { id: 'community', icon: <MessageCircle className="h-[19px] w-[19px]" />, label: 'Чат' },
     { id: 'profile', icon: <UserRound className="h-[19px] w-[19px]" />, label: 'Профиль' },
   ];
 

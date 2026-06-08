@@ -1,3 +1,5 @@
+import { isMockApiEnabled, mockApiRequest } from './mockApi';
+
 const API_BASE_URL = import.meta.env.VITE_API_URL?.trim() || '/api/v1';
 const REQUEST_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS || 12000);
 
@@ -22,6 +24,10 @@ class ApiClient {
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    if (isMockApiEnabled()) {
+      return mockApiRequest<T>(endpoint, options);
+    }
+
     const isFormData = options.body instanceof FormData;
     const headers: Record<string, string> = {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),

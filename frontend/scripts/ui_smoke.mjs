@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
 
-const APP_URL = process.env.MVP_WEB_URL || 'http://127.0.0.1:5173';
+const APP_URL = process.env.MVP_WEB_URL || 'http://127.0.0.1:5173/tupka2.0';
 const CHROME_PATH = process.env.CHROME_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const DEBUG_PORT = 9300 + Math.floor(Math.random() * 500);
 const SCREENSHOT_PATH = join(tmpdir(), 'synthmarket-mvp-profile.png');
@@ -207,6 +207,28 @@ try {
   await act(cdp, setValueExpression('textarea[placeholder*="soundcloud"]', 'soundcloud.com/demo'), 'set profile links');
   await act(cdp, clickTextExpression('button', 'Сохранить профиль'), 'save profile');
   await waitFor(cdp, bodyIncludesExpression(profileBio), 'saved profile bio');
+
+  await act(cdp, clickAriaExpression('Чат'), 'open community');
+  await waitFor(cdp, `${bodyIncludesExpression('Community')} && ${bodyIncludesExpression('Synthesizers')}`, 'community rooms');
+  await act(cdp, clickTextExpression('button', 'Synthesizers'), 'open synth community room');
+  await waitFor(cdp, bodyIncludesExpression('#Synthesizers'), 'community room');
+
+  const chatMessage = `UI chat smoke ${Date.now()}`;
+  await act(cdp, setValueExpression('input[placeholder="Write a message..."]', chatMessage), 'set chat message');
+  await act(
+    cdp,
+    `(() => {
+      const input = document.querySelector('input[placeholder="Write a message..."]');
+      const button = input?.parentElement?.querySelector('button');
+      if (!button || button.disabled) return false;
+      button.click();
+      return true;
+    })()`,
+    'send chat message',
+  );
+  await waitFor(cdp, bodyIncludesExpression(chatMessage), 'sent chat message');
+  await act(cdp, clickAriaExpression('Назад'), 'return from community room');
+  await waitFor(cdp, bodyIncludesExpression('Synthesizers'), 'community after room');
 
   const screenshot = await cdp.send('Page.captureScreenshot', { format: 'png' });
   await writeFile(SCREENSHOT_PATH, Buffer.from(screenshot.data, 'base64'));

@@ -6,7 +6,7 @@ import { Hash, Send, Users } from 'lucide-react';
 import { hapticImpact } from '../lib/telegram';
 
 interface CommunityPageProps {
-  onRoomSelect?: (roomId: number) => void;
+  onRoomSelect?: (roomId: number, roomName: string) => void;
 }
 
 export const CommunityPage: React.FC<CommunityPageProps> = ({ onRoomSelect }) => {
@@ -29,7 +29,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ onRoomSelect }) =>
             {rooms.map((room) => (
               <button
                 key={room.id}
-                onClick={() => onRoomSelect?.(room.id)}
+                onClick={() => onRoomSelect?.(room.id, room.title)}
                 className="surface-card p-4 text-left transition-colors hover:border-[var(--border-strong)] active:scale-[0.98]"
               >
                 <div className="mb-2 flex items-center gap-2">

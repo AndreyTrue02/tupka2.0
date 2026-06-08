@@ -5,6 +5,8 @@ import {
   SearchPage,
   ListingDetailPage,
   CreateListingPage,
+  CommunityPage,
+  CommunityRoomPage,
   ProfilePage,
 } from './pages';
 import { SplashScreen } from './components/ui';
@@ -12,13 +14,15 @@ import { api } from './lib/api';
 import { initTelegram, setBackButton, hideBackButton } from './lib/telegram';
 import { useTheme } from './hooks';
 
-type MainTab = 'feed' | 'search' | 'profile';
-type ModalView = 'create-listing' | 'listing-detail' | null;
+type MainTab = 'feed' | 'search' | 'community' | 'profile';
+type ModalView = 'create-listing' | 'listing-detail' | 'community-room' | null;
 
 interface AppState {
   activeTab: MainTab;
   modal: ModalView;
   selectedListingId: number | null;
+  selectedRoomId: number | null;
+  selectedRoomName: string;
 }
 
 function App() {
@@ -29,6 +33,8 @@ function App() {
     activeTab: 'feed',
     modal: null,
     selectedListingId: null,
+    selectedRoomId: null,
+    selectedRoomName: '',
   });
   useEffect(() => {
     const tg = initTelegram();
@@ -53,6 +59,8 @@ function App() {
       ...prev,
       modal: null,
       selectedListingId: null,
+      selectedRoomId: null,
+      selectedRoomName: '',
     }));
   };
 
@@ -65,6 +73,8 @@ function App() {
         activeTab: tab as MainTab,
         modal: null,
         selectedListingId: null,
+        selectedRoomId: null,
+        selectedRoomName: '',
       }));
     }
   };
@@ -77,6 +87,15 @@ function App() {
     }));
   };
 
+  const handleRoomSelect = (roomId: number, roomName: string) => {
+    setState(prev => ({
+      ...prev,
+      selectedRoomId: roomId,
+      selectedRoomName: roomName,
+      modal: 'community-room',
+    }));
+  };
+
   const handleCreateSuccess = () => {
     setDataVersion((current) => current + 1);
     setState((prev) => ({
@@ -84,6 +103,8 @@ function App() {
       activeTab: 'feed',
       modal: null,
       selectedListingId: null,
+      selectedRoomId: null,
+      selectedRoomName: '',
     }));
   };
 
@@ -99,6 +120,8 @@ function App() {
         );
       case 'search':
         return <SearchPage onListingClick={handleListingClick} />;
+      case 'community':
+        return <CommunityPage onRoomSelect={handleRoomSelect} />;
       case 'profile':
         return (
           <ProfilePage
@@ -132,6 +155,15 @@ function App() {
         return (
           <ListingDetailPage
             listingId={state.selectedListingId}
+            onBack={closeModal}
+          />
+        );
+
+      case 'community-room':
+        return (
+          <CommunityRoomPage
+            roomId={state.selectedRoomId}
+            roomName={state.selectedRoomName}
             onBack={closeModal}
           />
         );
