@@ -1,0 +1,289 @@
+/* Берём цвета из темы Telegram — автоматически адаптируется к тёмному режиму */
+:root {
+  --tg-bg: var(--tg-theme-bg-color, #ffffff);
+  --tg-text: var(--tg-theme-text-color, #000000);
+  --tg-hint: var(--tg-theme-hint-color, #999999);
+  --tg-link: var(--tg-theme-link-color, #2481cc);
+  --tg-button: var(--tg-theme-button-color, #2481cc);
+  --tg-button-text: var(--tg-theme-button-text-color, #ffffff);
+  --tg-secondary-bg: var(--tg-theme-secondary-bg-color, #f1f1f1);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --gap: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--tg-bg);
+  color: var(--tg-text);
+  font-size: 15px;
+  line-height: 1.5;
+  /* Убираем bounce-scroll на iOS */
+  overscroll-behavior: none;
+}
+
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 72px; /* место под bottom nav */
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  background: var(--tg-bg);
+  border-top: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+  z-index: 100;
+}
+
+.bottom-nav button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  color: var(--tg-hint);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+
+.bottom-nav button.active {
+  color: var(--tg-button);
+}
+
+.bottom-nav .nav-icon {
+  font-size: 22px;
+}
+
+.nav-create {
+  background: var(--tg-button) !important;
+  color: var(--tg-button-text) !important;
+  width: 48px;
+  height: 48px;
+  border-radius: 50% !important;
+  font-size: 26px !important;
+  flex: 0 0 auto !important;
+  margin: 0 8px;
+  box-shadow: 0 2px 12px rgba(36, 129, 204, 0.4);
+}
+
+/* ── ОБЩИЕ КОМПОНЕНТЫ ── */
+
+.page {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--tg-bg);
+  z-index: 10;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--tg-link);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.card {
+  background: var(--tg-secondary-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: var(--tg-button);
+  color: var(--tg-button-text);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity 0.15s;
+}
+
+.btn:active { opacity: 0.8; }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--tg-button);
+  color: var(--tg-button);
+}
+
+.btn-danger {
+  background: #e53935;
+}
+
+/* ── LISTING CARD ── */
+.listing-card {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: var(--tg-secondary-bg);
+  border-radius: var(--radius);
+}
+
+.listing-card-img {
+  width: 90px;
+  height: 90px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: rgba(0,0,0,0.06);
+  flex-shrink: 0;
+}
+
+.listing-card-img.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.listing-card-info { flex: 1; min-width: 0; }
+
+.listing-card-title {
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.listing-card-price {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--tg-button);
+  margin-top: 4px;
+}
+
+.listing-card-meta {
+  font-size: 12px;
+  color: var(--tg-hint);
+  margin-top: 4px;
+}
+
+/* Состояние товара */
+.condition-badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.condition-new { background: #e8f5e9; color: #388e3c; }
+.condition-like_new { background: #e3f2fd; color: #1565c0; }
+.condition-good { background: #fff8e1; color: #f57f17; }
+.condition-fair { background: #fce4ec; color: #c62828; }
+
+/* ── ФОРМЫ ── */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  color: var(--tg-hint);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--tg-secondary-bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--tg-text);
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ── СООБЩЕНИЯ ЧАТА ── */
+.message-bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 15px;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.message-bubble.mine {
+  background: var(--tg-button);
+  color: var(--tg-button-text);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.message-bubble.theirs {
+  background: var(--tg-secondary-bg);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.message-time {
+  font-size: 11px;
+  color: var(--tg-hint);
+  align-self: flex-end;
+  margin-bottom: 12px;
+}
+
+/* ── ЛОАДЕР ── */
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: var(--tg-hint);
+  font-size: 14px;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--tg-hint);
+}
+
+.empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state-text { font-size: 15px; }
